@@ -1,3 +1,4 @@
+@import "~bootstrap";
 *
 {
     margin: 0;
@@ -23,3 +24,20 @@ body
 section {
     height: 100vh;
 }
+
+.section-two {
+    background-color: rgba(88, 88, 88, 0.979);
+}
+svg {
+    overflow: visible;
+    height: 100%;
+    
+    /* Fix Safari rendering bug */
+    transform: translateZ(0);
+  }
+  
+  path {
+    stroke-width: 2;
+    stroke: gray;
+  }
+  
