@@ -16,16 +16,22 @@ const gui = new dat.GUI()
 
 const loader = new GLTFLoader();
 
-loader.load( '/scene.gltf', function ( gltf ) {
-    gltf.scene.position.x = 0; // once rescaled, position the model where needed
-    gltf.scene.position.y = -2;
-    gltf.scene.position.z = -1.5;
+loader.load( '/3d/s9_mini_drone/scene.gltf', function ( gltf ) {
+    gltf.scene.position.x = 33; // once rescaled, position the model where needed
+    gltf.scene.position.y = 16;
+    gltf.scene.position.z = -40;
 
+    gltf.scene.rotation.x = .62; // once rescaled, position the model where needed
+    gltf.scene.rotation.y = -1;
+    gltf.scene.rotation.z = .22;
 
+// gui.add(gltf.scene.position, 'x').min(-100).max(100).step(.01)
+// gui.add(gltf.scene.position, 'y').min(-100).max(100).step(.01)
+// gui.add(gltf.scene.position, 'z').min(-100).max(100).step(.01)
 
-gui.add(gltf.scene.position, 'x').min(-10).max(10).step(.01)
-gui.add(gltf.scene.position, 'y').min(-10).max(10).step(.01)
-gui.add(gltf.scene.position, 'z').min(-10).max(10).step(.01)
+gui.add(gltf.scene.rotation, 'x').min(-100).max(100).step(.01)
+gui.add(gltf.scene.rotation, 'y').min(-100).max(100).step(.01)
+gui.add(gltf.scene.rotation, 'z').min(-100).max(100).step(.01)
 	scene.add( gltf.scene );
 
 
@@ -74,7 +80,7 @@ scene.add(pointLight)
 
 // Lights2
 
-const pointLight2 = new THREE.PointLight(0xff0000, 2)
+const pointLight2 = new THREE.PointLight(0xffffff, 2)
 pointLight2.position.set(-2,3,1)
 pointLight2.intensity = 17
 scene.add(pointLight2)
@@ -145,7 +151,7 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 /**
  * Animate
  */
-
+ 
 const clock = new THREE.Clock()
 
 const tick = () =>
@@ -167,3 +173,78 @@ const tick = () =>
 }
 
 tick()
+
+
+
+gsap.registerPlugin(ScrollTrigger);
+
+ ScrollTrigger.defaults({
+   immediateRender: false,
+   ease: "power1.inOut",
+   scrub: true
+ });
+ 
+
+ let drone_anim = gsap.timeline()
+    
+
+ // Full Height
+
+ drone_anim.to(scene.rotation, { y: 4.79, scrollTrigger: {
+
+     trigger: ".section-two",
+
+     endTrigger: ".section-four",
+     end: "top bottom",      
+
+}})
+
+
+ // Slide 2
+
+ drone_anim.to(camera.position, { x: -0.1, scrollTrigger: {
+
+     trigger: ".section-two",
+     
+     start: "top bottom",
+     end: "top top",
+
+}}) 
+
+
+ 
+ // Slide 3
+ 
+ drone_anim.to(scene.rotation, { z: 1.6, scrollTrigger: {
+
+     trigger: ".section-three",
+
+     start: "top bottom",
+     end: "top top",
+
+}})
+
+ 
+
+
+ // // Slide 4 - The problem child
+ 
+ drone_anim.to(scene.rotation, { z: 0.02, y: 3.1, scrollTrigger: {
+
+     trigger: ".section-four",
+
+     start: "top bottom",
+     end: "top top",
+
+}})
+
+
+ 
+ drone_anim.to(camera.position, { x: 0.16, scrollTrigger: {
+
+     trigger: ".section-four",
+
+     start: "top top",
+     end: "bottom top",
+
+}})
