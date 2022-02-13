@@ -13,17 +13,16 @@ import { MotionPathPlugin } from "gsap/MotionPathPlugin.js";
 // const normalTexture = textureLoader.load('/normalMap.jpg')
 // Debug
 const gui = new dat.GUI();
-
-
-
-//gltf model
 const loader = new GLTFLoader();
+
+
+
 
 loader.load(
   "/3d/s9_mini_drone/scene.gltf",
   function (gltf) {
     var drone = gltf.scene;
-    drone.scale.set(0.35, 0.35, 0.35);
+    drone.scale.set(1, 1, 1);
 
     drone.position.x = 33; // once rescaled, position the model where needed
     drone.position.y = 16;
@@ -37,9 +36,9 @@ loader.load(
     gui.add(gltf.scene.position, "y").min(-100).max(100).step(0.01);
     gui.add(gltf.scene.position, "z").min(-100).max(100).step(0.01);
 
-    // gui.add(gltf.scene.rotation, 'x').min(-100).max(100).step(.01)
-    // gui.add(gltf.scene.rotation, 'y').min(-100).max(100).step(.01)
-    // gui.add(gltf.scene.rotation, 'z').min(-100).max(100).step(.01)
+    gui.add(gltf.scene.rotation, 'x').min(-100).max(100).step(.01)
+    gui.add(gltf.scene.rotation, 'y').min(-100).max(100).step(.01)
+    gui.add(gltf.scene.rotation, 'z').min(-100).max(100).step(.01)
 
     scene.add(drone);
 
@@ -70,11 +69,12 @@ loader.load(
       y: 2.4,
       scrollTrigger: {
         trigger: ".section-two",
-        scrub: 0.9,
+        scrub: 1.5,
         endTrigger: ".section-four",
         end: "top bottom",
       },
     });
+
 
     // Slide 2
 
@@ -126,6 +126,42 @@ loader.load(
 );
 
 
+loader.load(
+    "/3d/city/scene.gltf",
+    function (gltf) {
+      var table = gltf.scene;
+      table.scale.set(.5, .5, .5);
+  
+      table.position.x = 0; // once rescaled, position the model where needed
+      table.position.y = 0;
+      table.position.z = 0;
+  
+      table.rotation.x = 0; // once rescaled, position the model where needed
+      table.rotation.y = 0;
+      table.rotation.z = 0;
+  
+      
+  
+  
+      const tableFolder = gui.addFolder('city position')
+      tableFolder.add(gltf.scene.position, "x").min(-100).max(100).step(0.01);
+      tableFolder.add(gltf.scene.position, "y").min(-100).max(100).step(0.01);
+      tableFolder.add(gltf.scene.position, "z").min(-100).max(100).step(0.01);
+      tableFolder.add(gltf.scene.rotation, "y").min(-100).max(100).step(0.01);
+
+
+      scene.add(table);
+  
+      let table_anim = gsap.timeline();
+  
+     
+    },
+    undefined,
+    function (error) {
+      console.error(error);
+    }
+  );
+
 
 // Canvas
 const canvas = document.querySelector("canvas.webgl");
@@ -150,14 +186,28 @@ const scene = new THREE.Scene();
 
 // Lights
 
+const hemiLight = new THREE.HemisphereLight(0xffeeb1, 0x080820, 4);
+scene.add(hemiLight)
+
+const lightSpot = new THREE.SpotLight(0xffa95c,4);
+lightSpot.position.set(-50,50,50);
+lightSpot.castShadow = true;
+scene.add( lightSpot );
+
 const pointLight = new THREE.PointLight(0xffffff, 0.1);
 pointLight.position.set(10, 10, 3);
 pointLight.intensity = 7;
 
-gui.add(pointLight.position, "y").min(-10).max(10).step(0.01);
-gui.add(pointLight.position, "x").min(-10).max(10).step(0.01);
-gui.add(pointLight.position, "z").min(-10).max(10).step(0.01);
-gui.add(pointLight, "intensity").min(-10).max(10).step(0.01);
+
+
+
+const lightFolder1 = gui.addFolder('point light 1')
+lightFolder1.add(pointLight.position, "x").min(-10).max(10).step(0.01);
+lightFolder1.add(pointLight.position, "y").min(-10).max(10).step(0.01);
+lightFolder1.add(pointLight.position, "z").min(-10).max(10).step(0.01);
+lightFolder1.add(pointLight, "intensity").min(-10).max(10).step(0.01);
+
+lightFolder1.open()
 scene.add(pointLight);
 
 // Lights2
@@ -167,10 +217,12 @@ pointLight2.position.set(-2, 3, 1);
 pointLight2.intensity = 17;
 scene.add(pointLight2);
 
-gui.add(pointLight2.position, "y").min(-10).max(10).step(0.01);
-gui.add(pointLight2.position, "x").min(-10).max(10).step(0.01);
-gui.add(pointLight2.position, "z").min(-10).max(10).step(0.01);
-gui.add(pointLight2, "intensity").min(0).max(20).step(0.01);
+const lightFolder2 = gui.addFolder('point light 2')
+lightFolder2.add(pointLight2.position, "x").min(-10).max(10).step(0.01);
+lightFolder2.add(pointLight2.position, "y").min(-10).max(10).step(0.01);
+lightFolder2.add(pointLight2.position, "z").min(-10).max(10).step(0.01);
+lightFolder2.add(pointLight2, "intensity").min(-10).max(10).step(0.01);
+
 
 // const materialGui = gui.addFolder('material color')
 
@@ -218,6 +270,20 @@ camera.position.x = 0;
 camera.position.y = 0;
 camera.position.z = 2;
 scene.add(camera);
+
+
+const cameraPosition = gui.addFolder('camera position')
+cameraPosition.add(camera.position, 'x').min(-100).max(100).step(.01)
+cameraPosition.add(camera.position, 'y').min(-100).max(100).step(.01)
+cameraPosition.add(camera.position, 'z').min(-100).max(100).step(.01)
+
+
+      
+const cameraRotation = gui.addFolder('camera Rotation')
+cameraRotation.add(camera.rotation, 'x').min(-100).max(100).step(.01)
+cameraRotation.add(camera.rotation, 'y').min(-100).max(100).step(.01)
+// cameraRotation.add(camera.rotation, 'z').min(-100).max(100).step(.01)
+
 
 // Controls
 // const controls = new OrbitControls(camera, canvas)
