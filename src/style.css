@@ -10,8 +10,11 @@ body
 {
     /* height: 100vh;
     background: radial-gradient(#0776e0, #064683); */
-    background-color: #dfdfdf;
+    background-color: #000;
     font-family: 'Poppins';
+    background-image: url('https://dogstudio.co/app/themes/portfolio-2018/static/assets/images/menu/background-l.png');
+    background-size: cover;
+    background-attachment: fixed;
 }
 
 .webgl
@@ -26,7 +29,7 @@ section {
 }
 
 .section-two {
-    background-color: rgba(88, 88, 88, 0.979);
+    /* background-color: rgb(14, 14, 14); */
 }
 svg {
     overflow: visible;
